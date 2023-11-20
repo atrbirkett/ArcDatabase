@@ -65,7 +65,7 @@ Private Sub cmd_Description_ClassificationCategory_01_Click()
     Description_Classification_01 = ""
     DoCmd.SetProperty "Description_Classification_01", acPropertyVisible, "-1"
     DoCmd.SetProperty "cmd_Description_Classification_01", acPropertyVisible, "-1"
-    Description_Classification = Description_Material & "" & Description_ClassificationCategory_01
+    Description_Classification = Description_MaterialClassClass & "" & Description_ClassificationCategory_01
 
 End Sub
 Private Sub cmd_Rest_Classification_Click()
@@ -112,38 +112,38 @@ Private Sub Description_ClassificationCategory_01_Click()
     Description_Classification_03 = ""
     DoCmd.SetProperty "Description_Classification_03", acPropertyVisible, "0"
     DoCmd.SetProperty "cmd_Description_Classification_03", acPropertyVisible, "0"
-    Description_ClassificationDeff = "Deffinition: " & [Description_ClassificationCategory_01].[Column](1)
+    Description_ClassificationDeff = "Definition: " & [Description_ClassificationCategory_01].[Column](1)
 End Sub
 
 Private Sub Description_Classification_01_Click()
 ' Unhides sub-layers of search Classifications
     DoCmd.SetProperty "Description_Classification_02", acPropertyVisible, "-1"
     DoCmd.SetProperty "cmd_Description_Classification_02", acPropertyVisible, "-1"
-    Description_ClassificationDeff = "Deffinition: " & [Description_Classification_01].[Column](1)
+    Description_ClassificationDeff = "Definition: " & [Description_Classification_01].[Column](1)
 End Sub
 
 Private Sub Description_Classification_02_Click()
 ' Unhides sub-layers of search Classifications
     DoCmd.SetProperty "Description_Classification_03", acPropertyVisible, "-1"
     DoCmd.SetProperty "cmd_Description_Classification_03", acPropertyVisible, "-1"
-    Description_ClassificationDeff = "Deffinition: " & [Description_Classification_02].[Column](1)
+    Description_ClassificationDeff = "Definition: " & [Description_Classification_02].[Column](1)
 End Sub
 
 Private Sub Description_Classification_03_Click()
 ' Unhides sub-layers of search Classifications
     DoCmd.SetProperty "Description_Classification_04", acPropertyVisible, "-1"
     DoCmd.SetProperty "cmd_Description_Classification_04", acPropertyVisible, "-1"
-    Description_ClassificationDeff = "Deffinition: " & [Description_Classification_03].[Column](1)
+    Description_ClassificationDeff = "Definition: " & [Description_Classification_03].[Column](1)
 End Sub
 
 Private Sub Description_Classification_04_Click()
 ' Unhides sub-layers of search Classifications
     DoCmd.SetProperty "Description_Classification_05", acPropertyVisible, "-1"
     DoCmd.SetProperty "cmd_Description_Classification_05", acPropertyVisible, "-1"
-    Description_ClassificationDeff = "Deffinition: " & [Description_Classification_04].[Column](1)
+    Description_ClassificationDeff = "Definition: " & [Description_Classification_04].[Column](1)
 End Sub
 Private Sub Description_Classification_FL_Click()
-    Description_ClassificationDeff = "Deffinition: " & [Description_Classification_FL].[Column](1)
+    Description_ClassificationDeff = "Definition: " & [Description_Classification_FL].[Column](1)
 End Sub
 Private Sub Description_ClassificationCategory_01_AfterUpdate()
     DoCmd.Requery "Description_Classification_01"
@@ -272,36 +272,36 @@ Private Sub Classification_TypeCategory_01_Click()
     DoCmd.SetProperty "Classification_Type_03", acPropertyVisible, "0"
     DoCmd.SetProperty "cmd_Classification_Type_03", acPropertyVisible, "0"
     Classification_Type_04 = ""
-    Classification_TypeDeff = "Deffinition: " & [Classification_TypeCategory_01].[Column](1)
+    Classification_TypeDeff = "Definition: " & [Classification_TypeCategory_01].[Column](1)
 End Sub
 
 Private Sub Classification_Type_01_Click()
 ' Unhides sub-layers of search Types
     DoCmd.SetProperty "Classification_Type_02", acPropertyVisible, "-1"
     DoCmd.SetProperty "cmd_Classification_Type_02", acPropertyVisible, "-1"
-    Classification_TypeDeff = "Deffinition: " & [Classification_Type_01].[Column](1)
+    Classification_TypeDeff = "Definition: " & [Classification_Type_01].[Column](1)
 End Sub
 
 Private Sub Classification_Type_02_Click()
 ' Unhides sub-layers of search Types
     DoCmd.SetProperty "Classification_Type_03", acPropertyVisible, "-1"
     DoCmd.SetProperty "cmd_Classification_Type_03", acPropertyVisible, "-1"
-    Classification_TypeDeff = "Deffinition: " & [Classification_Type_02].[Column](1)
+    Classification_TypeDeff = "Definition: " & [Classification_Type_02].[Column](1)
 End Sub
 
 Private Sub Classification_Type_03_Click()
 ' Unhides sub-layers of search Types
-    Classification_TypeDeff = "Deffinition: " & [Classification_Type_03].[Column](1)
+    Classification_TypeDeff = "Definition: " & [Classification_Type_03].[Column](1)
 End Sub
 
 Private Sub Classification_Type_04_Click()
 ' Unhides sub-layers of search Types
     DoCmd.SetProperty "Classification_Type_05", acPropertyVisible, "-1"
     DoCmd.SetProperty "cmd_Classification_Type_05", acPropertyVisible, "-1"
-    Classification_TypeDeff = "Deffinition: " & [Classification_Type_04].[Column](1)
+    Classification_TypeDeff = "Definition: " & [Classification_Type_04].[Column](1)
 End Sub
 Private Sub Classification_Type_FL_Click()
-    Classification_TypeDeff = "Deffinition: " & [Classification_Type_FL].[Column](1) & " (" & [Classification_Type_FL].[Column](2) & ")"
+    Classification_TypeDeff = "Definition: " & [Classification_Type_FL].[Column](1) & " (" & [Classification_Type_FL].[Column](2) & ")"
 End Sub
 Private Sub Classification_TypeCategory_01_AfterUpdate()
     DoCmd.Requery "Classification_Type_01"
@@ -397,36 +397,36 @@ Private Sub Classification_EventCategory_01_Click()
     DoCmd.SetProperty "cmd_Classification_Event_03", acPropertyVisible, "0"
     Classification_Event_04 = ""
         Classification_Event_FL = ""
-    Classification_EventDeff = "Deffinition: " & [Classification_EventCategory_01].[Column](1)
+    Classification_EventDeff = "Definition: " & [Classification_EventCategory_01].[Column](1)
 End Sub
 
 Private Sub Classification_Event_01_Click()
 ' Unhides sub-layers of search Events
     DoCmd.SetProperty "Classification_Event_02", acPropertyVisible, "-1"
     DoCmd.SetProperty "cmd_Classification_Event_02", acPropertyVisible, "-1"
-    Classification_EventDeff = "Deffinition: " & [Classification_Event_01].[Column](1)
+    Classification_EventDeff = "Definition: " & [Classification_Event_01].[Column](1)
 End Sub
 
 Private Sub Classification_Event_02_Click()
 ' Unhides sub-layers of search Events
     DoCmd.SetProperty "Classification_Event_03", acPropertyVisible, "-1"
     DoCmd.SetProperty "cmd_Classification_Event_03", acPropertyVisible, "-1"
-    Classification_EventDeff = "Deffinition: " & [Classification_Event_02].[Column](1)
+    Classification_EventDeff = "Definition: " & [Classification_Event_02].[Column](1)
 End Sub
 
 Private Sub Classification_Event_03_Click()
 ' Unhides sub-layers of search Events
-    Classification_EventDeff = "Deffinition: " & [Classification_Event_03].[Column](1)
+    Classification_EventDeff = "Definition: " & [Classification_Event_03].[Column](1)
 End Sub
 
 Private Sub Classification_Event_04_Click()
 ' Unhides sub-layers of search Events
     DoCmd.SetProperty "Classification_Event_05", acPropertyVisible, "-1"
     DoCmd.SetProperty "cmd_Classification_Event_05", acPropertyVisible, "-1"
-    Classification_EventDeff = "Deffinition: " & [Classification_Event_04].[Column](1)
+    Classification_EventDeff = "Definition: " & [Classification_Event_04].[Column](1)
 End Sub
 Private Sub Classification_Event_FL_Click()
-    Classification_EventDeff = "Deffinition: " & [Classification_Event_FL].[Column](1) & " (" & [Classification_Event_FL].[Column](2) & ")"
+    Classification_EventDeff = "Definition: " & [Classification_Event_FL].[Column](1) & " (" & [Classification_Event_FL].[Column](2) & ")"
 End Sub
 Private Sub Classification_EventCategory_01_AfterUpdate()
     DoCmd.Requery "Classification_Event_01"

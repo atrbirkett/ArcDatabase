@@ -21,7 +21,7 @@ End Sub
 
 Private Sub Form_AfterUpdate()
     DoCmd.SetWarnings False
-    DoCmd.RunSQL "INSERT INTO bak_WorkedStoneRecords SELECT ID_StoneNumber,ID_Building,ID_Masonry,ID_Trench,ID_Context,Check_Retained,Location_Address,Location_Grid,Location_X,Location_Y,Mesure_Weight,Mesure_Depth,Mesure_Width,Mesure_Length,Mesure_Diam,Description_Dimensions,Material_Type,Description_Material,Description_Finish,Description_Purpose,Description_Characteristics,Description_Condition,Description_Comments FROM tbl_WorkedStoneRecords " & _
+    DoCmd.RunSQL "INSERT INTO bak_WorkedStoneRecords SELECT ID_StoneNumber,ID_Building,ID_Masonry,ID_Trench,ID_Context,Check_Retained,Location_Address,Location_Grid,Location_X,Location_Y,Mesure_Weight,Mesure_Depth,Mesure_Width,Mesure_Length,Mesure_Diam,Description_Dimensions,Material_Type,Description_MaterialClassClass,Description_Finish,Description_Purpose,Description_Characteristics,Description_Condition,Description_Comments FROM tbl_WorkedStoneRecords " & _
         "WHERE UID=" & UID
     DoCmd.SetWarnings True
 End Sub
@@ -150,38 +150,38 @@ Private Sub Description_PURPOSECategory_01_Click()
         Description_Purpose_05 = ""
     DoCmd.SetProperty "Description_PURPOSE_05", acPropertyVisible, "0"
     DoCmd.SetProperty "cmd_Description_PURPOSE_05", acPropertyVisible, "0"
-    Description_PurposeDeff = "Deffinition: " & [Description_PurposeCategory_01].[Column](1)
+    Description_PurposeDeff = "Definition: " & [Description_PurposeCategory_01].[Column](1)
 End Sub
 Private Sub Description_PURPOSE_01_Click()
 ' Unhides sub-layers of search PURPOSEs
     DoCmd.SetProperty "Description_PURPOSE_02", acPropertyVisible, "-1"
     DoCmd.SetProperty "cmd_Description_PURPOSE_02", acPropertyVisible, "-1"
-    Description_PurposeDeff = "Deffinition: " & [Description_Purpose_01].[Column](1)
+    Description_PurposeDeff = "Definition: " & [Description_Purpose_01].[Column](1)
 End Sub
 Private Sub Description_PURPOSE_02_Click()
 ' Unhides sub-layers of search PURPOSEs
     DoCmd.SetProperty "Description_PURPOSE_03", acPropertyVisible, "-1"
     DoCmd.SetProperty "cmd_Description_PURPOSE_03", acPropertyVisible, "-1"
-    Description_PurposeDeff = "Deffinition: " & [Description_Purpose_02].[Column](1)
+    Description_PurposeDeff = "Definition: " & [Description_Purpose_02].[Column](1)
 End Sub
 Private Sub Description_PURPOSE_03_Click()
 ' Unhides sub-layers of search PURPOSEs
     DoCmd.SetProperty "Description_PURPOSE_04", acPropertyVisible, "-1"
     DoCmd.SetProperty "cmd_Description_PURPOSE_04", acPropertyVisible, "-1"
-    Description_PurposeDeff = "Deffinition: " & [Description_Purpose_03].[Column](1)
+    Description_PurposeDeff = "Definition: " & [Description_Purpose_03].[Column](1)
 End Sub
 Private Sub Description_PURPOSE_04_Click()
 ' Unhides sub-layers of search PURPOSEs
     DoCmd.SetProperty "Description_PURPOSE_05", acPropertyVisible, "-1"
     DoCmd.SetProperty "cmd_Description_PURPOSE_05", acPropertyVisible, "-1"
-    Description_PurposeDeff = "Deffinition: " & [Description_Purpose_04].[Column](1)
+    Description_PurposeDeff = "Definition: " & [Description_Purpose_04].[Column](1)
 End Sub
 Private Sub Description_PURPOSE_05_Click()
 ' Unhides sub-layers of search PURPOSEs
-    Description_PurposeDeff = "Deffinition: " & [Description_Purpose_05].[Column](1)
+    Description_PurposeDeff = "Definition: " & [Description_Purpose_05].[Column](1)
 End Sub
 Private Sub Description_PURPOSE_FL_Click()
-      Description_PurposeDeff = "Deffinition: " & [Description_Purpose_FL].[Column](1) & " (" & [Description_Purpose_FL].[Column](2) & ")"
+      Description_PurposeDeff = "Definition: " & [Description_Purpose_FL].[Column](1) & " (" & [Description_Purpose_FL].[Column](2) & ")"
 End Sub
 
 '
@@ -190,136 +190,136 @@ End Sub
 '
 '  BEGINING OF MATERIAL SECTION
 '
-Private Sub cmd_Description_Material_01_Click()
+Private Sub cmd_Description_MaterialClass_Level01_Click()
 ' Adds selection to Material/Category from Material/Category
-     Description_Material = Description_Material & "; " & Description_Material_01
-     DoCmd.Requery "Description_Material"
+     Description_MaterialClassClass = Description_MaterialClassClass & "; " & Description_MaterialClass_Level01
+     DoCmd.Requery "Description_MaterialClassClass"
 End Sub
 
-Private Sub cmd_Description_Material_02_Click()
+Private Sub cmd_Description_MaterialClass_Level02_Click()
 ' Adds selection to Material/Category from Material/Category
-     Description_Material = Description_Material & "; " & Description_Material_02
-     DoCmd.Requery "Description_Material"
+     Description_MaterialClassClass = Description_MaterialClassClass & "; " & Description_MaterialClass_Level02
+     DoCmd.Requery "Description_MaterialClassClass"
 End Sub
 
-Private Sub cmd_Description_Material_03_Click()
+Private Sub cmd_Description_MaterialClass_Level03_Click()
 ' Adds selection to Material/Category from Material/Category
-     Description_Material = Description_Material & "; " & Description_Material_03
-     DoCmd.Requery "Description_Material"
+     Description_MaterialClassClass = Description_MaterialClassClass & "; " & Description_MaterialClass_Level03
+     DoCmd.Requery "Description_MaterialClassClass"
 End Sub
 
 
-Private Sub cmd_Description_Material_FL_Click()
+Private Sub cmd_Description_MaterialClassClassification_FindAll_Click()
 ' Adds selection to Type/Category from Item/Category
-    Description_Material = Description_Material & "; " & Description_Material_FL
-    DoCmd.Requery "Description_Material"
+    Description_MaterialClassClass = Description_MaterialClassClass & "; " & Description_MaterialClassClassification_FindAll
+    DoCmd.Requery "Description_MaterialClassClass"
 End Sub
 
-Private Sub cmd_Description_MaterialCategory_01_Click()
-    Description_Material_FL = ""
-    DoCmd.SetProperty "Label1176", acPropertyVisible, "-1"
-    DoCmd.SetProperty "Description_Material_FL", acPropertyVisible, "-1"
-    DoCmd.SetProperty "cmd_Description_Material_FL", acPropertyVisible, "-1"
-    Description_Material_01 = ""
-    DoCmd.SetProperty "Description_Material_01", acPropertyVisible, "-1"
-    DoCmd.SetProperty "cmd_Description_Material_01", acPropertyVisible, "-1"
+Private Sub cmd_Description_MaterialType_Level01_Click()
+    Description_MaterialClassClassification_FindAll = ""
+    DoCmd.SetProperty "lab_SearchAllLevels", acPropertyVisible, "-1"
+    DoCmd.SetProperty "Description_MaterialClassClassification_FindAll", acPropertyVisible, "-1"
+    DoCmd.SetProperty "cmd_Description_MaterialClassClassification_FindAll", acPropertyVisible, "-1"
+    Description_MaterialClass_Level01 = ""
+    DoCmd.SetProperty "Description_MaterialClass_Level01", acPropertyVisible, "-1"
+    DoCmd.SetProperty "cmd_Description_MaterialClass_Level01", acPropertyVisible, "-1"
 End Sub
 
 Private Sub cmd_ResetMatDescription_Click()
 ' Resets and clears all fields and hides all layers of item
 ' description search when a new category is chosen
-    Description_MaterialCategory = ""
-    Description_MaterialCategory_01 = ""
-    Description_Material = ""
-    Description_Material_FL = ""
-    DoCmd.SetProperty "Label1176", acPropertyVisible, "0"
-    DoCmd.SetProperty "Description_Material_FL", acPropertyVisible, "0"
-    DoCmd.SetProperty "cmd_Description_Material_FL", acPropertyVisible, "0"
-    Description_Material_01 = ""
-    DoCmd.SetProperty "Description_Material_01", acPropertyVisible, "0"
-    DoCmd.SetProperty "cmd_Description_Material_01", acPropertyVisible, "0"
-    Description_Material_02 = ""
-    DoCmd.SetProperty "Description_Material_02", acPropertyVisible, "0"
-    DoCmd.SetProperty "cmd_Description_Material_02", acPropertyVisible, "0"
-    Description_Material_03 = ""
-    DoCmd.SetProperty "Description_Material_03", acPropertyVisible, "0"
-    DoCmd.SetProperty "cmd_Description_Material_03", acPropertyVisible, "0"
-    Description_MatDeff = ""
+    Description_MaterialType = ""
+    Description_MaterialType_Level01 = ""
+    Description_MaterialClassClass = ""
+    Description_MaterialClassClassification_FindAll = ""
+    DoCmd.SetProperty "lab_SearchAllLevels", acPropertyVisible, "0"
+    DoCmd.SetProperty "Description_MaterialClassClassification_FindAll", acPropertyVisible, "0"
+    DoCmd.SetProperty "cmd_Description_MaterialClassClassification_FindAll", acPropertyVisible, "0"
+    Description_MaterialClass_Level01 = ""
+    DoCmd.SetProperty "Description_MaterialClass_Level01", acPropertyVisible, "0"
+    DoCmd.SetProperty "cmd_Description_MaterialClass_Level01", acPropertyVisible, "0"
+    Description_MaterialClass_Level02 = ""
+    DoCmd.SetProperty "Description_MaterialClass_Level02", acPropertyVisible, "0"
+    DoCmd.SetProperty "cmd_Description_MaterialClass_Level02", acPropertyVisible, "0"
+    Description_MaterialClass_Level03 = ""
+    DoCmd.SetProperty "Description_MaterialClass_Level03", acPropertyVisible, "0"
+    DoCmd.SetProperty "cmd_Description_MaterialClass_Level03", acPropertyVisible, "0"
+    Description_MatDefinition = ""
 End Sub
-Private Sub Description_Material_FL_Click()
-    Description_MatDeff = "Deffinition: " & [Description_Material_FL].[Column](1) & " (" & [Description_Material_FL].[Column](2) & ")"
+Private Sub Description_MaterialClassClassification_FindAll_Click()
+    Description_MatDefinition = "Definition: " & [Description_MaterialClassClassification_FindAll].[Column](1) & " (" & [Description_MaterialClassClassification_FindAll].[Column](2) & ")"
 End Sub
 
-Private Sub Description_MaterialCategory_01_Click()
+Private Sub Description_MaterialType_Level01_Click()
 ' Adds selection to Type/Category from Item/Category and unhides type
-    Description_Material_FL = ""
-    DoCmd.SetProperty "Label1176", acPropertyVisible, "-1"
-    DoCmd.SetProperty "Description_Material_FL", acPropertyVisible, "-1"
-    DoCmd.SetProperty "cmd_Description_Material_FL", acPropertyVisible, "-1"
-    Description_Material_01 = ""
-    DoCmd.SetProperty "Description_Material_01", acPropertyVisible, "-1"
-    DoCmd.SetProperty "cmd_Description_Material_01", acPropertyVisible, "-1"
-    Description_Material_02 = ""
-    DoCmd.SetProperty "Description_Material_02", acPropertyVisible, "0"
-    DoCmd.SetProperty "cmd_Description_Material_02", acPropertyVisible, "0"
-    Description_Material_03 = ""
-    DoCmd.SetProperty "Description_Material_03", acPropertyVisible, "0"
-    DoCmd.SetProperty "cmd_Description_Material_03", acPropertyVisible, "0"
-    Description_MatDeff = "Deffinition: " & [Description_MaterialCategory_01].[Column](1)
+    Description_MaterialClassClassification_FindAll = ""
+    DoCmd.SetProperty "lab_SearchAllLevels", acPropertyVisible, "-1"
+    DoCmd.SetProperty "Description_MaterialClassClassification_FindAll", acPropertyVisible, "-1"
+    DoCmd.SetProperty "cmd_Description_MaterialClassClassification_FindAll", acPropertyVisible, "-1"
+    Description_MaterialClass_Level01 = ""
+    DoCmd.SetProperty "Description_MaterialClass_Level01", acPropertyVisible, "-1"
+    DoCmd.SetProperty "cmd_Description_MaterialClass_Level01", acPropertyVisible, "-1"
+    Description_MaterialClass_Level02 = ""
+    DoCmd.SetProperty "Description_MaterialClass_Level02", acPropertyVisible, "0"
+    DoCmd.SetProperty "cmd_Description_MaterialClass_Level02", acPropertyVisible, "0"
+    Description_MaterialClass_Level03 = ""
+    DoCmd.SetProperty "Description_MaterialClass_Level03", acPropertyVisible, "0"
+    DoCmd.SetProperty "cmd_Description_MaterialClass_Level03", acPropertyVisible, "0"
+    Description_MatDefinition = "Definition: " & [Description_MaterialType_Level01].[Column](1)
 
 End Sub
-Private Sub Description_Material_01_AfterUpdate()
-    DoCmd.Requery "Description_Material_01"
-    DoCmd.Requery "Description_Material_02"
-    DoCmd.Requery "Description_Material_03"
-    DoCmd.Requery "Description_MaterialCategory_01"
+Private Sub Description_MaterialClass_Level01_AfterUpdate()
+    DoCmd.Requery "Description_MaterialClass_Level01"
+    DoCmd.Requery "Description_MaterialClass_Level02"
+    DoCmd.Requery "Description_MaterialClass_Level03"
+    DoCmd.Requery "Description_MaterialType_Level01"
 End Sub
 
-Private Sub Description_Material_01_Click()
+Private Sub Description_MaterialClass_Level01_Click()
 ' Unhides sub-layers of search Materials
-    DoCmd.SetProperty "Description_Material_02", acPropertyVisible, "-1"
-    DoCmd.SetProperty "cmd_Description_Material_02", acPropertyVisible, "-1"
-    Description_MatDeff = "Deffinition: " & [Description_Material_01].[Column](1)
+    DoCmd.SetProperty "Description_MaterialClass_Level02", acPropertyVisible, "-1"
+    DoCmd.SetProperty "cmd_Description_MaterialClass_Level02", acPropertyVisible, "-1"
+    Description_MatDefinition = "Definition: " & [Description_MaterialClass_Level01].[Column](1)
 End Sub
 
-Private Sub Description_Material_02_Click()
+Private Sub Description_MaterialClass_Level02_Click()
 ' Unhides sub-layers of search Materials
-    DoCmd.SetProperty "Description_Material_03", acPropertyVisible, "-1"
-    DoCmd.SetProperty "cmd_Description_Material_03", acPropertyVisible, "-1"
-    Description_MatDeff = "Deffinition: " & [Description_Material_02].[Column](1)
+    DoCmd.SetProperty "Description_MaterialClass_Level03", acPropertyVisible, "-1"
+    DoCmd.SetProperty "cmd_Description_MaterialClass_Level03", acPropertyVisible, "-1"
+    Description_MatDefinition = "Definition: " & [Description_MaterialClass_Level02].[Column](1)
 End Sub
-Private Sub Description_Material_03_Click()
-    Description_MatDeff = "Deffinition: " & [Description_Material_03].[Column](1)
+Private Sub Description_MaterialClass_Level03_Click()
+    Description_MatDefinition = "Definition: " & [Description_MaterialClass_Level03].[Column](1)
 End Sub
-Private Sub Description_MaterialCategory_01_AfterUpdate()
-    DoCmd.Requery "Description_Material_01"
-    DoCmd.Requery "Description_Material_02"
-    DoCmd.Requery "Description_Material_03"
-    DoCmd.Requery "Description_MaterialCategory_01"
+Private Sub Description_MaterialType_Level01_AfterUpdate()
+    DoCmd.Requery "Description_MaterialClass_Level01"
+    DoCmd.Requery "Description_MaterialClass_Level02"
+    DoCmd.Requery "Description_MaterialClass_Level03"
+    DoCmd.Requery "Description_MaterialType_Level01"
 End Sub
-Private Sub Description_Material_02_AfterUpdate()
-    DoCmd.Requery "Description_Material_01"
-    DoCmd.Requery "Description_Material_02"
-    DoCmd.Requery "Description_Material_03"
-    DoCmd.Requery "Description_MaterialCategory_01"
+Private Sub Description_MaterialClass_Level02_AfterUpdate()
+    DoCmd.Requery "Description_MaterialClass_Level01"
+    DoCmd.Requery "Description_MaterialClass_Level02"
+    DoCmd.Requery "Description_MaterialClass_Level03"
+    DoCmd.Requery "Description_MaterialType_Level01"
 End Sub
-Private Sub Description_Material_03_AfterUpdate()
-    DoCmd.Requery "Description_Material_01"
-    DoCmd.Requery "Description_Material_02"
-    DoCmd.Requery "Description_Material_03"
-    DoCmd.Requery "Description_MaterialCategory_01"
+Private Sub Description_MaterialClass_Level03_AfterUpdate()
+    DoCmd.Requery "Description_MaterialClass_Level01"
+    DoCmd.Requery "Description_MaterialClass_Level02"
+    DoCmd.Requery "Description_MaterialClass_Level03"
+    DoCmd.Requery "Description_MaterialType_Level01"
 End Sub
-Private Sub Description_Material_04_AfterUpdate()
-    DoCmd.Requery "Description_Material_01"
-    DoCmd.Requery "Description_Material_02"
-    DoCmd.Requery "Description_Material_03"
-    DoCmd.Requery "Description_MaterialCategory_01"
+Private Sub Description_MaterialClass_04_AfterUpdate()
+    DoCmd.Requery "Description_MaterialClass_Level01"
+    DoCmd.Requery "Description_MaterialClass_Level02"
+    DoCmd.Requery "Description_MaterialClass_Level03"
+    DoCmd.Requery "Description_MaterialType_Level01"
 End Sub
-Private Sub Description_Material_05_AfterUpdate()
-    DoCmd.Requery "Description_Material_01"
-    DoCmd.Requery "Description_Material_02"
-    DoCmd.Requery "Description_Material_03"
-    DoCmd.Requery "Description_MaterialCategory_01"
+Private Sub Description_MaterialClass_05_AfterUpdate()
+    DoCmd.Requery "Description_MaterialClass_Level01"
+    DoCmd.Requery "Description_MaterialClass_Level02"
+    DoCmd.Requery "Description_MaterialClass_Level03"
+    DoCmd.Requery "Description_MaterialType_Level01"
 '
 '  END OF MATERIAL SECTION
 '
