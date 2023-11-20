@@ -1,0 +1,10 @@
+{
+  "version": "0.2.1",
+  "tasks": [
+    {
+      "taskLabel": "task-Form_frm_ArchiveContents",
+      "appliesTo": "Form_frm_ArchiveContents.cls",
+      "type": "launch"
+    }
+  ]
+}
