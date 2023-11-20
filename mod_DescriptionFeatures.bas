@@ -1,5 +1,5 @@
-' Module: mod_DescriptionMaterial
-Public Sub UpdateMaterialDescription(ByRef materialField As Control, ByVal newMaterialValue As String, Optional ByVal requeryControl As String = "")
+' Module: mod_DescriptionFeatures
+Public Sub UpdateFeaturesDescription(ByRef featureField As Control, ByVal newFeatureValue As String, Optional ByVal requeryControl As String = "")
     ' Trim the new value and the existing field value
     newMaterialValue = Trim(newMaterialValue)
     Dim currentValue As String
@@ -20,24 +20,19 @@ Public Sub UpdateMaterialDescription(ByRef materialField As Control, ByVal newMa
         materialField.Value = newMaterialValue
     End If
 
-    ' Check if requery is needed
+    ' Requery if needed
     If requeryControl <> "" Then
-        ' Assuming materialField is on a subform inside the tab control on the main form
-        Dim mainForm As Form
-        Set mainForm = Forms("nav_LandingPage")
+        Dim parentForm As Form
+        Set parentForm = featureField.Form
 
-        Dim subForm As Form
-        Set subForm = mainForm!NavigationSubform.Form
-
-        ' Check if the control to requery is on the subform
-        If Not subForm.Controls(requeryControl) Is Nothing Then
-            subForm.Controls(requeryControl).Requery
-        Else
-            MsgBox "Control to requery not found on the subform.", vbExclamation, "Requery Error"
+        ' Requery the control on the form
+        If Not parentForm.Controls(requeryControl) Is Nothing Then
+            parentForm.Controls(requeryControl).Requery
         End If
     End If
 End Sub
-Public Sub SetControlVisibility(controlName As String, isVisible As Boolean)
+
+Public Sub SetFeatureControlVisibility(controlName As String, isVisible As Boolean)
     Dim visibilityValue As String
     visibilityValue = IIf(isVisible, "-1", "0") ' "-1" for visible, "0" for not visible
     DoCmd.SetProperty controlName, acPropertyVisible, visibilityValue
