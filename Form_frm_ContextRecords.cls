@@ -1,61 +1,17 @@
-VERSION 1.0 CLASS
-BEGIN
-MultiUse = -1  'True
-End
-Attribute VB_Name = "Form_frm_ContextRecords"
-Attribute VB_GlobalNameSpace = False
-Attribute VB_Creatable = True
-Attribute VB_PredeclaredId = True
-Attribute VB_Exposed = False
+'
+'  ------ CUT/DEPOSIT RECORD VIEW ------------------------------------------------------------------------------------
+'
 Private Sub UpdatePageVisibility()
     Dim cutValues As Variant
     cutValues = Array("Cut", "Structural")
-    ' Assume the Tab Control is named "TabControl1"
-    ' and "Description_Cut" is at index 0, "Description_Deposit" is at index 1
-    If Not IsNull(Me.Context_Type.Value) And InStr(Join(cutValues, ","), Me.Context_Type.Value) > 0 Then
-        Me.TabCtl8166.Pages(0).Visible = True
-        Me.TabCtl8166.Pages(1).Visible = False
-    Else
-        Me.TabCtl8166.Pages(0).Visible = False
-        Me.TabCtl8166.Pages(1).Visible = True
-    End If
+
+    Dim isVisible As Boolean
+    isVisible = Not IsNull(Me.Context_Type.Value) And (Me.Context_Type.Value = cutValues(0) Or Me.Context_Type.Value = cutValues(1))
+
+    ' Setting visibility based on the condition
+    Me.Tab_Details.Pages(0).Visible = isVisible
+    Me.Tab_Details.Pages(1).Visible = Not isVisible
 End Sub
-
-Private Sub cmd_GoSpecialFinds_Click()
-    Dim stDocName As String
-    Dim stLinkCriteria As String
-
-    stDocName = "frm_FindsSpecialRecords"
-
-    stLinkCriteria = "[ID_FindID]=" & Me![ListBox_RelatedSpecialFinds]
-    DoCmd.OpenForm stDocName, , , stLinkCriteria, , 3
-End Sub
-
-Private Sub cmd_GoSamples_Click()
-    Dim stDocName As String
-    Dim stLinkCriteria As String
-
-    stDocName = "frm_SampleRecords"
-
-    stLinkCriteria = "[ID_SampleID]=" & Me![ListBox_RelatedSamples]
-    DoCmd.OpenForm stDocName, , , stLinkCriteria, , 3
-End Sub
-
-Private Sub cmd_GoPhotographs_Click()
-    Dim stDocName As String
-    Dim stLinkCriteria As String
-
-    stDocName = "frm_ArchiveSitePhotos"
-
-    stLinkCriteria = "[UID]=" & Me![ListBox_RelatedPhotos]
-    DoCmd.OpenForm stDocName, , , stLinkCriteria, , 3
-End Sub
-
-Private Sub cmdFilter_Click()
-    Me.Form.Filter = "ID_Context=" & Me.txt_GoTo
-    Me.Form.FilterOn = True
-End Sub
-
 Private Sub Context_Type_AfterUpdate()
     UpdatePageVisibility()
 End Sub
@@ -63,66 +19,243 @@ Private Sub Form_Load()
     ' Update the page visibility when the form loads
     UpdatePageVisibility()
 End Sub
-Private Sub cmd_AddFinds_Click()
-    DoCmd.OpenForm "frm_FindsRecords", acNormal, "", "", acEdit, acNormal
+'
+'  ------ RELATED RECORDS SECTION ------------------------------------------------------------------------------------
+'
+'   **Note a requery of the Listbox appeaars in cmd_GoToRecord_Click()**
+Private Sub ListBox_RelatedPhotos_DblClick(Cancel As Integer)
+    'opens the image using the path created in column 7
+    Application.FollowHyperlink Me.ListBox_RelatedPhotos.Column(7)
 End Sub
+'
+'   PHOTOGRAPHS
+'
+Private Sub cmd_GoPhotographs_Click()
+    On Error GoTo ErrorHandler
 
-Private Sub cmd_AddLevels_Click()
-    DoCmd.OpenForm "frm_LevelRecords", acNormal, "", "", acEdit, acNormal
+    Dim selectedUID As Long
+
+    ' Check if an item is selected in the listbox
+    If Me.ListBox_RelatedPhotos.ListIndex <> -1 Then
+        ' Assuming UID is a numeric (AutoNumber) field
+        selectedUID = Me.ListBox_RelatedPhotos.Column(8)
+
+        ' Open frm_ArchiveSitePhotos as a popup
+        DoCmd.OpenForm "frm_ArchiveSitePhotos", WindowMode:=acDialog
+
+        ' Find the record with the matching UID
+        With Forms("frm_ArchiveSitePhotos").RecordsetClone
+            .FindFirst "UID = " & selectedUID
+            If Not .NoMatch Then
+                Forms("frm_ArchiveSitePhotos").Bookmark = .Bookmark
+            Else
+                MsgBox "Record not found.", vbInformation
+            End If
+        End With
+    Else
+        MsgBox "Please select an item from the list.", vbInformation
+    End If
+
+    Exit Sub
+
+ErrorHandler:
+    MsgBox "An error occurred: " & Err.Description
 End Sub
+'
+'   SPECIAL FINDS
+'
+Private Sub cmd_GoSpecialFinds_Click()
+    On Error GoTo ErrorHandler
 
-Private Sub cmd_AddSamplesBulk_Click()
+    Dim selectedID_FindID As Long
 
-    DoCmd.OpenForm "frm_SampleBulkRecords", acNormal, "", "", acEdit, acNormal
+    ' Check if an item is selected in the listbox
+    If Me.ListBox_RelatedSpecialFinds.ListIndex <> -1 Then
+        ' Assuming ID_FindID is a numeric field
+        selectedID_FindID = Me.ListBox_RelatedSpecialFinds.Column(8)
+
+        ' Open frm_FindsSpecailRecords as a popup
+        DoCmd.OpenForm "frm_FindsSpecailRecords", WindowMode:=acDialog
+
+        ' Find the record with the matching ID_FindID
+        With Forms("frm_FindsSpecailRecords").RecordsetClone
+            .FindFirst "ID_FindID = " & selectedUID
+            If Not .NoMatch Then
+                Forms("frm_FindsSpecailRecords").Bookmark = .Bookmark
+            Else
+                MsgBox "Record not found.", vbInformation
+            End If
+        End With
+    Else
+        MsgBox "Please select an item from the list.", vbInformation
+    End If
+
+    Exit Sub
+
+ErrorHandler:
+    MsgBox "An error occurred: " & Err.Description
 End Sub
+'
+'   SAMPLES
+'
+Private Sub cmd_GoSamples_Click()
+    On Error GoTo ErrorHandler
 
-Private Sub cmd_AddSamplesSngl_Click()
-    DoCmd.OpenForm "frm_SampleSingleRecords", acNormal, "", "", acEdit, acNormal
+    Dim selectedID_SampleID As Long
+
+    ' Check if an item is selected in the listbox
+    If Me.ListBox_RelatedSamples.ListIndex <> -1 Then
+        ' Assuming ID_SampleID is a numeric field
+        selectedID_SampleID = Me.ListBox_RelatedSamples.Column(8)
+
+        ' Open tbl_SampleRecords as a popup
+        DoCmd.OpenForm "tbl_SampleRecords", WindowMode:=acDialog
+
+        ' Find the record with the matching ID_SampleID
+        With Forms("tbl_SampleRecords").RecordsetClone
+            .FindFirst "ID_SampleID = " & selectedUID
+            If Not .NoMatch Then
+                Forms("tbl_SampleRecords").Bookmark = .Bookmark
+            Else
+                MsgBox "Record not found.", vbInformation
+            End If
+        End With
+    Else
+        MsgBox "Please select an item from the list.", vbInformation
+    End If
+
+    Exit Sub
+
+ErrorHandler:
+    MsgBox "An error occurred: " & Err.Description
 End Sub
+'
+'   PHOTOGRAMMETRY
+'
+Private Sub cmd_GoPhotogrammetry_Click()
+    On Error GoTo ErrorHandler
 
+    Dim selectedUID As Long
 
+    ' Check if an item is selected in the listbox
+    If Me.ListBox_RelatedPhotogrammetry.ListIndex <> -1 Then
+        ' Assuming UID is a numeric (AutoNumber) field
+        selectedUID = Me.ListBox_RelatedPhotogrammetry.Column(8)
+
+        ' Open frm_PhotogrammetryRecords as a popup
+        DoCmd.OpenForm "frm_PhotogrammetryRecords", WindowMode:=acDialog
+
+        ' Find the record with the matching UID
+        With Forms("frm_PhotogrammetryRecords").RecordsetClone
+            .FindFirst "UID = " & selectedUID
+            If Not .NoMatch Then
+                Forms("frm_PhotogrammetryRecords").Bookmark = .Bookmark
+            Else
+                MsgBox "Record not found.", vbInformation
+            End If
+        End With
+    Else
+        MsgBox "Please select an item from the list.", vbInformation
+    End If
+
+    Exit Sub
+
+ErrorHandler:
+    MsgBox "An error occurred: " & Err.Description
+End Sub
+'
+'  ------ FOOTERS SECTION ------------------------------------------------------------------------------------
+'
+'  FILTERS
+'
 Private Sub cmdRemoveFilter_Click()
-    On Error GoTo NoFilter
+    On Error Resume Next
     DoCmd.RunCommand acCmdRemoveAllFilters
-    Me.Form.FilterOn = False
-NoFilter:
-    MsgBox "You now have no filters set."
+    If Err.Number = 0 Then
+        Me.FilterOn = False
+        MsgBox "All filters have been removed."
+    Else
+        MsgBox "Error " & Err.Number & ": " & Err.Description, vbExclamation, "Filter Removal Error"
+    End If
 End Sub
+Private Sub cmd_GoToRecord_Click()
+    Dim recordID As Variant
+    Dim rs As Recordset
 
-Private Sub cmdSearch_Click()
-    DoCmd.OpenForm "frm_SearchContextRecords", acNormal, "", "", acFormEdit, acNormal
+    recordID = Me.txt_GoTo.Value
+
+    If IsNumeric(recordID) Then
+        Set rs = Me.RecordsetClone
+        rs.FindFirst "[ID_Context] = " & recordID
+
+        If rs.NoMatch Then
+            MsgBox "Record not found.", vbInformation, "Search Result"
+        Else
+            Me.Bookmark = rs.Bookmark
+        End If
+    Else
+        MsgBox "Please enter a valid numeric ID.", vbInformation, "Invalid Input"
+    End If
+
+    If Not rs Is Nothing Then
+        Set rs = Nothing
+    End If
 End Sub
-
+'
+'  RECORD SELECTORS SECTION
+'
 Private Sub Form_Current()
-    Me.ListBox_RelatedPhotogrammetry.Requery
+    ' Requery the ListBox_RelatedPhotos
     Me.ListBox_RelatedPhotos.Requery
     Me.ListBox_RelatedSpecialFinds.Requery
     Me.ListBox_RelatedSamples.Requery
-    UpdatePageVisibility
-    Me.txtRecs = "Record" & " " & Form.CurrentRecord & " " & "of" & " " & Form.RecordsetClone.RecordCount
+    Me.ListBox_RelatedPhotogrammetry.Requery
+
+    'Displays Record Number
+    On Error GoTo ErrorHandler
+
+    ' Update record count display
+    Me.txtRecs = "Record " & Me.CurrentRecord & " of " & Me.RecordsetClone.RecordCount
+
+    Exit Sub
+
+ErrorHandler:
+    ' Handle potential errors, for example when recordset is not available
+    Me.txtRecs = "Record information unavailable"
+    ' Optionally, log error or display a message box
 End Sub
 Private Sub cmdFirst_Click()
-    On Error Resume Next
-    Me.Recordset.MoveFirst
+    'Go to first record
+    If Not (Me.Recordset.BOF) Then
+        Me.Recordset.MoveFirst
+    End If
 End Sub
-
 Private Sub cmdLast_Click()
-    On Error Resume Next
-    Me.Recordset.MoveLast
+    'Go to last record
+    If Not (Me.Recordset.EOF) Then
+        Me.Recordset.MoveLast
+    End If
 End Sub
-
 Private Sub cmdNext_Click()
-    On Error Resume Next
-    Me.Recordset.MoveNext
+    'Go to next record
+    If Not (Me.Recordset.EOF) Then
+        Me.Recordset.MoveNext
+        If Me.Recordset.EOF Then Me.Recordset.MoveLast
+    End If
 End Sub
-
 Private Sub cmdPrevious_Click()
-    On Error Resume Next
-    Me.Recordset.MovePrevious
+    'Go to previous record
+    If Not (Me.Recordset.BOF) Then
+        Me.Recordset.MovePrevious
+        If Me.Recordset.BOF Then Me.Recordset.MoveFirst
+    End If
 End Sub
-
 Private Sub cmdNew_Click()
-    On Error Resume Next
+    'Go to new record
+    On Error GoTo ErrorHandler
     DoCmd.RunCommand acCmdRecordsGoToNew
-End Sub
+    Exit Sub
 
+ErrorHandler:
+    MsgBox "Error " & Err.Number & ": " & Err.Description, vbCritical, "Error"
+End Sub

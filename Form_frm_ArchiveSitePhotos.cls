@@ -1,14 +1,27 @@
-VERSION 1.0 CLASS
-BEGIN
-  MultiUse = -1  'True
-END
-Attribute VB_Name = "Form_frm_ArchiveSitePhotos"
-Attribute VB_GlobalNameSpace = False
-Attribute VB_Creatable = True
-Attribute VB_PredeclaredId = True
-Attribute VB_Exposed = False
 Option Compare Database
+'
+'  ------ IMAGE OPEN SECTION ------------------------------------------------------------------------------------
+'
+Private Sub viewerImage_DblClick(Cancel As Integer)
+    On Error GoTo 0
+    Application.FollowHyperlink([CurrentProject].[Path] & [File_Path] & [File_Name] & [File_Extention])
+End Sub
+Private Sub cmdOpen_Click()
+    Dim filePath As String
+    filePath = Me.Photo_Path.Value ' Get the value from the Photo_Path text box
 
+    If filePath <> "" Then
+        On Error GoTo 0
+        Application.FollowHyperlink filePath
+    Else
+        MsgBox "Photo path is empty.", vbExclamation, "No Path"
+    End If
+End Sub
+'
+'  ------ FOOTERS SECTION ------------------------------------------------------------------------------------
+'
+'  FILTERS
+'
 Private Sub txt_GoTo_AfterUpdate()
     On Error GoTo 0
     Me.Form.Filter = "File_Name=" & Me.txtSearch
@@ -36,33 +49,33 @@ Private Sub cmdFilter_Click()
     Dim searchValue As String
     Dim columnName As String
     Dim filterCriteria As String
-    
+
     selectedSeason = Me.SeasonFilter.Value
     selectedType = Me.TypeFilter.Value
     searchValue = Nz(Me.txtSearch.Value, "") ' Handle null value
-    
+
     columnName = GetColumnName(Nz(Me.cboPrefix.Value, "")) ' Handle null value
-    
+
     filterCriteria = ""
-    
+
     If selectedSeason <> "" Then
         filterCriteria = "ID_Season = " & selectedSeason
     End If
-    
+
     If selectedType <> "" Then
         If filterCriteria <> "" Then
             filterCriteria = filterCriteria & " AND "
         End If
         filterCriteria = filterCriteria & "Class_RecordClass = '" & selectedType & "'"
     End If
-    
+
     If columnName <> "" And searchValue <> "" Then
         If filterCriteria <> "" Then
             filterCriteria = filterCriteria & " AND "
         End If
         filterCriteria = filterCriteria & columnName & " LIKE '*" & searchValue & "*'"
     End If
-    
+
     If filterCriteria <> "" Then
         Me.Filter = filterCriteria
         Me.FilterOn = True
@@ -73,59 +86,66 @@ Private Sub cmdFilter_Click()
 End Sub
 Private Function GetColumnName(prefix As String) As String
     Select Case prefix
-        Case "TR": GetColumnName = "Link_Trench"
-        Case "CTXT": GetColumnName = "Link_Context"
-        Case "SMPL": GetColumnName = "Link_Sample"
-        Case "SF": GetColumnName = "Link_SpecialFind"
-        Case "BF": GetColumnName = "Link_Find"
-        Case "M": GetColumnName = "Link_Masonry"
-        Case Else: GetColumnName = ""
+        Case "TR" : GetColumnName = "Link_Trench"
+        Case "CTXT" : GetColumnName = "Link_Context"
+        Case "SMPL" : GetColumnName = "Link_Sample"
+        Case "SF" : GetColumnName = "Link_SpecialFind"
+        Case "BF" : GetColumnName = "Link_Find"
+        Case "M" : GetColumnName = "Link_Masonry"
+        Case Else : GetColumnName = ""
     End Select
 End Function
 Private Sub Form_AfterUpdate()
     On Error GoTo 0
 End Sub
-Private Sub cmdOpen_Click()
-    Dim filePath As String
-    filePath = Me.Photo_Path.Value ' Get the value from the Photo_Path text box
-    
-    If filePath <> "" Then
-        On Error GoTo 0
-        Application.FollowHyperlink filePath
-    Else
-        MsgBox "Photo path is empty.", vbExclamation, "No Path"
-    End If
-End Sub
+'
+'  RECORD SELECTORS SECTION
+'
 Private Sub Form_Current()
-    Me.txtRecs = "Record" & " " & Form.CurrentRecord & " " & "of" & " " & Form.RecordsetClone.RecordCount
-End Sub
+    On Error GoTo ErrorHandler
 
-Private Sub viewerImage_DblClick(Cancel As Integer)
-    On Error GoTo 0
-    Application.FollowHyperlink ([CurrentProject].[Path] & [File_Path] & [File_Name] & [File_Extention])
+    ' Update record count display
+    Me.txtRecs = "Record " & Me.CurrentRecord & " of " & Me.RecordsetClone.RecordCount
+
+    Exit Sub
+
+ErrorHandler:
+    ' Handle potential errors, for example when recordset is not available
+    Me.txtRecs = "Record information unavailable"
+    ' Optionally, log error or display a message box
 End Sub
 Private Sub cmdFirst_Click()
-    On Error Resume Next
-    Me.Recordset.MoveFirst
+    'Go to first record
+    If Not (Me.Recordset.BOF) Then
+        Me.Recordset.MoveFirst
+    End If
 End Sub
-
 Private Sub cmdLast_Click()
-    On Error Resume Next
-    Me.Recordset.MoveLast
+    'Go to last record
+    If Not (Me.Recordset.EOF) Then
+        Me.Recordset.MoveLast
+    End If
 End Sub
-
 Private Sub cmdNext_Click()
-    On Error Resume Next
-    Me.Recordset.MoveNext
+    'Go to next record
+    If Not (Me.Recordset.EOF) Then
+        Me.Recordset.MoveNext
+        If Me.Recordset.EOF Then Me.Recordset.MoveLast
+    End If
 End Sub
-
 Private Sub cmdPrevious_Click()
-    On Error Resume Next
-    Me.Recordset.MovePrevious
+    'Go to previous record
+    If Not (Me.Recordset.BOF) Then
+        Me.Recordset.MovePrevious
+        If Me.Recordset.BOF Then Me.Recordset.MoveFirst
+    End If
 End Sub
-
 Private Sub cmdNew_Click()
-    On Error Resume Next
+    'Go to new record
+    On Error GoTo ErrorHandler
     DoCmd.RunCommand acCmdRecordsGoToNew
-End Sub
+    Exit Sub
 
+ErrorHandler:
+    MsgBox "Error " & Err.Number & ": " & Err.Description, vbCritical, "Error"
+End Sub

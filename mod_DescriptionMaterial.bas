@@ -1,9 +1,11 @@
 ' Module: mod_DescriptionMaterial
 Public Sub UpdateMaterialDescription(ByRef materialField As Control, ByVal newMaterialValue As String, Optional ByVal requeryControl As String = "")
-    ' Trim the new value and the existing field value
-    newMaterialValue = Trim(newMaterialValue)
+    ' Handle null value and trim the new value
+    newMaterialValue = Trim(Nz(newMaterialValue, ""))
+
     Dim currentValue As String
-    currentValue = Trim(materialField.Value)
+    ' Handle null value for the current field value
+    currentValue = Nz(Trim(materialField.Value), "")
 
     ' Update the field value based on the specified conditions
     If Left(currentValue, 2) = "; " Then
@@ -37,6 +39,13 @@ Public Sub UpdateMaterialDescription(ByRef materialField As Control, ByVal newMa
         End If
     End If
 End Sub
+
+Public Sub SetControlVisibility(controlName As String, isVisible As Boolean)
+    Dim visibilityValue As String
+    visibilityValue = IIf(isVisible, "-1", "0") ' "-1" for visible, "0" for not visible
+    DoCmd.SetProperty controlName, acPropertyVisible, visibilityValue
+End Sub
+
 Public Sub SetControlVisibility(controlName As String, isVisible As Boolean)
     Dim visibilityValue As String
     visibilityValue = IIf(isVisible, "-1", "0") ' "-1" for visible, "0" for not visible

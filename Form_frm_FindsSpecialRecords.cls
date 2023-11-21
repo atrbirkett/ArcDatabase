@@ -1,8 +1,12 @@
 '
 '   ----- ACCESSION & ARCHIVE SECTION ------------------------------------------------------------------------------------
 '
+Private Sub Form_Load()
+    Me.ID_LastRecord.Value = GetMaxSpecialFindID()
+End Sub
 Private Sub ID_BagIDField_AfterUpdate()
     On Error GoTo ErrorHandler
+    'update accession number
     Me.ID_AccessionNumber = "2022.HARP/" & ID_BoxID.Value & "SF" & Right("0000" & CStr(ID_FindID), 4)
     Exit Sub
 ErrorHandler:
@@ -104,7 +108,7 @@ Private Sub cmd_Description_MaterialClass_AllLevels_Click()
     mod_DescriptionMaterial.UpdateMaterialDescription Me.Description_MaterialClass, Me.Description_MaterialClass_AllLevels.Value, "Description_MaterialClass"
 End Sub
 Private Sub Description_MaterialClass_AllLevels_Click()
-    Description_MatDefinition = "Definition: " & [Description_MaterialClass_AllLevels].[Column](1)
+    Description_MatDefinition = "Definition: " & [Description_MaterialClass_AllLevels].[Column](1) & " [PARENT: " & [Description_MaterialClass_AllLevels].[Column](2) & "]"
 End Sub
 '
 '   MATERIAL RESET
@@ -236,7 +240,7 @@ Private Sub cmd_Description_FeaturesType_AllLevels_Click()
     mod_DescriptionFeatures.UpdateFeaturesDescription Me.Description_FeaturesType, Me.Description_FeaturesType_AllLevels.Value, "Description_FeaturesType"
 End Sub
 Private Sub Description_FeaturesType_AllLevels_Click()
-    Description_FeaturesDefinition = "Definition: " & [Description_FeaturesType_AllLevels].[Column](1)
+    Description_FeaturesDefinition = "Definition: " & [Description_FeaturesType_AllLevels].[Column](1) & " [PARENT: " & [Description_FeaturesType_AllLevels].[Column](2) & "]"
 End Sub
 '
 '   FEATURES RESET
@@ -253,6 +257,45 @@ Private Sub cmd_ResetFeaturesDescription_Click()
     Description_FeaturesType_Level04 = " "
     Description_FeaturesType_Level05 = " "
     Description_FeaturesDefinition = " "
+End Sub
+'
+'  ------ RELATED RECORDS SECTION ------------------------------------------------------------------------------------
+'
+'   **Note a requery of the Listbox appeaars in cmd_GoToRecord_Click()**
+Private Sub ListBox_RelatedPhotos_DblClick(Cancel As Integer)
+    'opens the image using the path created in column 7
+    Application.FollowHyperlink Me.ListBox_RelatedPhotos.Column(7)
+End Sub
+Private Sub cmd_GoPhotographs_Click()
+    On Error GoTo ErrorHandler
+
+    Dim selectedUID As Long
+
+    ' Check if an item is selected in the listbox
+    If Me.ListBox_RelatedPhotos.ListIndex <> -1 Then
+        ' Assuming UID is a numeric (AutoNumber) field
+        selectedUID = Me.ListBox_RelatedPhotos.Column(8)
+
+        ' Open frm_ArchiveSitePhotos as a popup
+        DoCmd.OpenForm "frm_ArchiveSitePhotos", WindowMode:=acDialog
+
+        ' Find the record with the matching UID
+        With Forms("frm_ArchiveSitePhotos").RecordsetClone
+            .FindFirst "UID = " & selectedUID
+            If Not .NoMatch Then
+                Forms("frm_ArchiveSitePhotos").Bookmark = .Bookmark
+            Else
+                MsgBox "Record not found.", vbInformation
+            End If
+        End With
+    Else
+        MsgBox "Please select an item from the list.", vbInformation
+    End If
+
+    Exit Sub
+
+ErrorHandler:
+    MsgBox "An error occurred: " & Err.Description
 End Sub
 '
 '  ------ FOOTERS SECTION ------------------------------------------------------------------------------------
@@ -296,6 +339,8 @@ End Sub
 '  RECORD SELECTORS SECTION
 '
 Private Sub Form_Current()
+    ' Requery the ListBox_RelatedPhotos
+    Me.ListBox_RelatedPhotos.Requery
     'Displays Record Number
     On Error GoTo ErrorHandler
 
