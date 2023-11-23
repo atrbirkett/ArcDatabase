@@ -1,14 +1,9 @@
-VERSION 1.0 CLASS
-BEGIN
-  MultiUse = -1  'True
-END
-Attribute VB_Name = "Form_nav_LandingPage"
-Attribute VB_GlobalNameSpace = False
-Attribute VB_Creatable = True
-Attribute VB_PredeclaredId = True
-Attribute VB_Exposed = False
-Private Sub Form_Current()
+Private Sub Form_Open(Cancel As Integer)
+    ' Open the "nav_splashscreen" form
+    DoCmd.OpenForm "nav_splashscreen", acNormal
 
+    ' Enter admin mode
+    EnterAdminMode
 End Sub
 
 Private Sub NavigationButton5420_Click()

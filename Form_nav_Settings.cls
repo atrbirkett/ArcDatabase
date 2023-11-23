@@ -1,23 +1,11 @@
-VERSION 1.0 CLASS
-BEGIN
-  MultiUse = -1  'True
-END
-Attribute VB_Name = "Form_nav_Settings"
-Attribute VB_GlobalNameSpace = False
-Attribute VB_Creatable = True
-Attribute VB_PredeclaredId = True
-Attribute VB_Exposed = False
-Option Compare Database
-
 Private Sub cmd_Adminoff_Click()
-    Call DoCmd.ShowToolbar("Ribbon", acToolbarNo)
-    Call DoCmd.NavigateTo("acNavigationCategoryObjectType")
-    Call DoCmd.RunCommand(acCmdWindowHide)
+    ' Exit admin mode
+    ExitAdminMode
 End Sub
 
 Private Sub cmd_Adminon_Click()
-    Call DoCmd.ShowToolbar("Ribbon", acToolbarYes)
-    Call DoCmd.SelectObject(acTable, , True)
+    ' Enter admin mode
+    EnterAdminMode
 End Sub
 
 Private Sub cmdBackup_Click()
