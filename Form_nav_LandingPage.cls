@@ -1,9 +1,6 @@
 Private Sub Form_Open(Cancel As Integer)
     ' Open the "nav_splashscreen" form
-    DoCmd.OpenForm "nav_splashscreen", acNormal
-
-    ' Enter admin mode
-    EnterAdminMode
+    DoCmd.OpenForm "nav_SplashScreen", acNormal
 End Sub
 
 Private Sub NavigationButton5420_Click()

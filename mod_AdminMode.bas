@@ -1,45 +1,21 @@
-' Module: mod_DescriptionFeatures
-Public Sub UpdateFeaturesDescription(ByRef featureField As Control, ByVal newFeatureValue As String, Optional ByVal requeryControl As String = "")
-    ' Trim the new value and the existing field value
-    newFeatureValue = Trim(newFeatureValue)
-    Dim currentValue As String
-    currentValue = Trim(featureField.Value)
+' Module: mod_AdminMode
+Public IsAdminMode As Boolean ' Declare a global variable to track admin mode
 
-    ' Update the field value based on the specified conditions
-    If Left(currentValue, 2) = "; " Then
-        ' If the field starts with " ; ", remove it and then append the new value
-        featureField.Value = Mid(currentValue, 3) & "; " & newFeatureValue
-    ElseIf Left(currentValue, 1) = " " Then
-        ' If the field starts with " ", remove it and then append the new value
-        featureField.Value = Mid(currentValue, 2) & "; " & newFeatureValue
-    ElseIf currentValue <> "" Then
-        ' If the field contains text, append the new value with a prefix of "; "
-        featureField.Value = currentValue & "; " & newFeatureValue
-    Else
-        ' If the field is empty, just add the new value
-        featureField.Value = newFeatureValue
-    End If
+' Procedure to Exit admin mode
+Public Sub ExitAdminMode()
+    Call DoCmd.ShowToolbar("Ribbon", acToolbarNo)
+    Call DoCmd.NavigateTo("acNavigationCategoryObjectType")
+    Call DoCmd.RunCommand(acCmdWindowHide)
 
-    ' Check if requery is needed
-    If requeryControl <> "" Then
-        ' Assuming materialField is on a subform inside the tab control on the main form
-        Dim mainForm As Form
-        Set mainForm = Forms("nav_LandingPage")
-
-        Dim subForm As Form
-        Set subForm = mainForm!NavigationSubform.Form
-
-        ' Check if the control to requery is on the subform
-        If Not subForm.Controls(requeryControl) Is Nothing Then
-            subForm.Controls(requeryControl).Requery
-        Else
-            MsgBox "Control to requery not found on the subform.", vbExclamation, "Requery Error"
-        End If
-    End If
+    ' Set the global variable to indicate admin mode
+    IsAdminMode = True
 End Sub
 
-Public Sub SetFeatureControlVisibility(controlName As String, isVisible As Boolean)
-    Dim visibilityValue As String
-    visibilityValue = IIf(isVisible, "-1", "0") ' "-1" for visible, "0" for not visible
-    DoCmd.SetProperty controlName, acPropertyVisible, visibilityValue
+' Procedure to Enter admin mode
+Public Sub EnterAdminMode()
+    Call DoCmd.ShowToolbar("Ribbon", acToolbarYes)
+    Call DoCmd.SelectObject(acTable, , True)
+
+    ' Set the global variable to indicate admin mode
+    IsAdminMode = False
 End Sub

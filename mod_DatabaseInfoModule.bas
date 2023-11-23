@@ -1,45 +1,21 @@
-' Module: mod_DescriptionFeatures
-Public Sub UpdateFeaturesDescription(ByRef featureField As Control, ByVal newFeatureValue As String, Optional ByVal requeryControl As String = "")
-    ' Trim the new value and the existing field value
-    newFeatureValue = Trim(newFeatureValue)
-    Dim currentValue As String
-    currentValue = Trim(featureField.Value)
+' Module Name: mod_DatabaseInfoModule
 
-    ' Update the field value based on the specified conditions
-    If Left(currentValue, 2) = "; " Then
-        ' If the field starts with " ; ", remove it and then append the new value
-        featureField.Value = Mid(currentValue, 3) & "; " & newFeatureValue
-    ElseIf Left(currentValue, 1) = " " Then
-        ' If the field starts with " ", remove it and then append the new value
-        featureField.Value = Mid(currentValue, 2) & "; " & newFeatureValue
-    ElseIf currentValue <> "" Then
-        ' If the field contains text, append the new value with a prefix of "; "
-        featureField.Value = currentValue & "; " & newFeatureValue
-    Else
-        ' If the field is empty, just add the new value
-        featureField.Value = newFeatureValue
-    End If
+Public Function GetDatabaseName() As String
+    ' Define the database name
+    GetDatabaseName = "ArcDatabase"
+End Function
 
-    ' Check if requery is needed
-    If requeryControl <> "" Then
-        ' Assuming materialField is on a subform inside the tab control on the main form
-        Dim mainForm As Form
-        Set mainForm = Forms("nav_LandingPage")
+Public Function GetDatabaseVersion() As String
+    ' Define the database version
+    GetDatabaseVersion = "Version: Labëria (03.11.02b)"
+End Function
 
-        Dim subForm As Form
-        Set subForm = mainForm!NavigationSubform.Form
+Public Function GetKnownIssues() As String
+    ' Define the known issues
+    GetKnownIssues = "- Non Invasive: masonry records, building records, and photogrammetry records are not currently implimented in this version" & vbCrLf &
+                     "- Invasive: human bone records are not currently implimented in this version" & vbCrLf &
+                     "- Datanase: paper records are not currently implimented in this version" & vbCrLf &
+                     "- Samples: when opned a dialogue appears asking for 'CurrentProject.Path' and an error with the Sample ID Field causing the naviation of records to break." & vbCrLf &
+                     "- Datasheet view: Formatting of datasheet views needs sorting."
+End Function
 
-        ' Check if the control to requery is on the subform
-        If Not subForm.Controls(requeryControl) Is Nothing Then
-            subForm.Controls(requeryControl).Requery
-        Else
-            MsgBox "Control to requery not found on the subform.", vbExclamation, "Requery Error"
-        End If
-    End If
-End Sub
-
-Public Sub SetFeatureControlVisibility(controlName As String, isVisible As Boolean)
-    Dim visibilityValue As String
-    visibilityValue = IIf(isVisible, "-1", "0") ' "-1" for visible, "0" for not visible
-    DoCmd.SetProperty controlName, acPropertyVisible, visibilityValue
-End Sub
