@@ -1,9 +1,16 @@
 ' Module: mod_DescriptionFeatures
 Public Sub UpdateFeaturesDescription(ByRef featureField As Control, ByVal newFeatureValue As String, Optional ByVal requeryControl As String = "")
-    ' Trim the new value and the existing field value
-    newFeatureValue = Trim(newFeatureValue)
+    ' Trim the new value and check for null
+    newFeatureValue = Trim(Nz(newFeatureValue, ""))
+    
+    ' Initialize currentValue as an empty string
     Dim currentValue As String
-    currentValue = Trim(featureField.Value)
+    currentValue = ""
+
+    ' Check if the featureField.Value is not null and then trim it
+    If Not IsNull(featureField.Value) Then
+        currentValue = Trim(featureField.Value)
+    End If
 
     ' Update the field value based on the specified conditions
     If Left(currentValue, 2) = "; " Then
