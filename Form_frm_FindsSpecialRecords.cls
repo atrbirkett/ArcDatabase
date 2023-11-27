@@ -47,8 +47,6 @@ Private Sub Description_MaterialType_Level01_AfterUpdate()
     DoCmd.Requery "Description_MaterialType_Level01"
 End Sub
 Private Sub Description_MaterialType_Level01_Click()
-    mod_DescriptionMaterial.SetControlVisibility "Description_MaterialClass_Level02", True
-    mod_DescriptionMaterial.SetControlVisibility "cmd_Description_MaterialClass_Level02", True
     Description_MatDefinition = "Definition: " & [Description_MaterialType_Level01].[Column](1)
 End Sub
 '
@@ -65,8 +63,6 @@ Private Sub Description_MaterialClass_Level01_AfterUpdate()
     DoCmd.Requery "Description_MaterialType_Level01"
 End Sub
 Private Sub Description_MaterialClass_Level01_Click()
-    mod_DescriptionMaterial.SetControlVisibility "Description_MaterialClass_Level02", True
-    mod_DescriptionMaterial.SetControlVisibility "cmd_Description_MaterialClass_Level02", True
     Description_MatDefinition = "Definition: " & [Description_MaterialClass_Level01].[Column](1)
 End Sub
 '
@@ -82,8 +78,6 @@ Private Sub Description_MaterialClass_Level02_AfterUpdate()
     DoCmd.Requery "Description_MaterialType_Level01"
 End Sub
 Private Sub Description_MaterialClass_Level02_Click()
-    mod_DescriptionMaterial.SetControlVisibility "Description_MaterialClass_Level03", True
-    mod_DescriptionMaterial.SetControlVisibility "cmd_Description_MaterialClass_Level03", True
     Description_MatDefinition = "Definition: " & [Description_MaterialClass_Level02].[Column](1)
 End Sub
 '
@@ -142,8 +136,6 @@ Private Sub Description_FeaturesCategory_Level01_AfterUpdate()
     DoCmd.Requery "Description_FeaturesCategory_Level01"
 End Sub
 Private Sub Description_FeaturesCategory_Level01_Click()
-    mod_DescriptionFeatures.SetControlVisibility "Description_FeaturesType_Level02", True
-    mod_DescriptionFeatures.SetControlVisibility "cmd_Description_FeaturesType_Level02", True
     Description_FeaturesDefinition = "Definition: " & [Description_FeaturesCategory_Level01].[Column](1)
 End Sub
 
