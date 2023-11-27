@@ -1,3 +1,4 @@
+
 '
 '   ----- ACCESSION & ARCHIVE SECTION ------------------------------------------------------------------------------------
 '
@@ -7,19 +8,19 @@ End Sub
 Private Sub ID_BagIDField_AfterUpdate()
     On Error GoTo ErrorHandler
     'update accession number
-    Me.ID_AccessionNumber = "2022.HARP/" & ID_BoxID.Value & "SF" & Right("0000" & CStr(ID_FindID), 4)
+    Me.ID_AccessionNumber = "2022.HARP/" & ID_BoxID.Value & "BF" & Right("0000" & CStr(ID_FindID), 4)
     Exit Sub
 ErrorHandler:
     MsgBox "An error occurred: " & Err.Description
 End Sub
 Private Sub AccessionID_AfterUpdate()
-    Me.ID_AccessionNumber = "2022.HARP/" & ID_BoxID.Value & "SF" & Right("0000" & CStr(ID_FindID), 4)
+    Me.ID_AccessionNumber = "2022.HARP/" & ID_BoxID.Value & "BF" & Right("0000" & CStr(ID_FindID), 4)
 End Sub
 Private Sub AccessionID_Click()
-    Me.ID_AccessionNumber = "2022.HARP/" & ID_BoxID.Value & "SF" & Right("0000" & CStr(ID_FindID), 4)
+    Me.ID_AccessionNumber = "2022.HARP/" & ID_BoxID.Value & "BF" & Right("0000" & CStr(ID_FindID), 4)
 End Sub
 Private Sub BoxID_AfterUpdate()
-    Me.AccessionID = "2022.HARP/" & ID_BoxID.Value & "/SF" & Right("0000" & CStr(ID_FindID), 4)
+    Me.AccessionID = "2022.HARP/" & ID_BoxID.Value & "/BF" & Right("0000" & CStr(ID_FindID), 4)
 End Sub
 Private Sub cmdAssemblage_Click()
     DoCmd.OpenForm "frm_Assemblages", acNormal, "", "", acFormEdit, acNormal
@@ -47,8 +48,6 @@ Private Sub Description_MaterialType_Level01_AfterUpdate()
     DoCmd.Requery "Description_MaterialType_Level01"
 End Sub
 Private Sub Description_MaterialType_Level01_Click()
-    mod_DescriptionMaterial.SetControlVisibility "Description_MaterialClass_Level02", True
-    mod_DescriptionMaterial.SetControlVisibility "cmd_Description_MaterialClass_Level02", True
     Description_MatDefinition = "Definition: " & [Description_MaterialType_Level01].[Column](1)
 End Sub
 '
@@ -65,8 +64,6 @@ Private Sub Description_MaterialClass_Level01_AfterUpdate()
     DoCmd.Requery "Description_MaterialType_Level01"
 End Sub
 Private Sub Description_MaterialClass_Level01_Click()
-    mod_DescriptionMaterial.SetControlVisibility "Description_MaterialClass_Level02", True
-    mod_DescriptionMaterial.SetControlVisibility "cmd_Description_MaterialClass_Level02", True
     Description_MatDefinition = "Definition: " & [Description_MaterialClass_Level01].[Column](1)
 End Sub
 '
@@ -82,8 +79,6 @@ Private Sub Description_MaterialClass_Level02_AfterUpdate()
     DoCmd.Requery "Description_MaterialType_Level01"
 End Sub
 Private Sub Description_MaterialClass_Level02_Click()
-    mod_DescriptionMaterial.SetControlVisibility "Description_MaterialClass_Level03", True
-    mod_DescriptionMaterial.SetControlVisibility "cmd_Description_MaterialClass_Level03", True
     Description_MatDefinition = "Definition: " & [Description_MaterialClass_Level02].[Column](1)
 End Sub
 '
@@ -142,8 +137,6 @@ Private Sub Description_FeaturesCategory_Level01_AfterUpdate()
     DoCmd.Requery "Description_FeaturesCategory_Level01"
 End Sub
 Private Sub Description_FeaturesCategory_Level01_Click()
-    mod_DescriptionFeatures.SetControlVisibility "Description_FeaturesType_Level02", True
-    mod_DescriptionFeatures.SetControlVisibility "cmd_Description_FeaturesType_Level02", True
     Description_FeaturesDefinition = "Definition: " & [Description_FeaturesCategory_Level01].[Column](1)
 End Sub
 
@@ -281,7 +274,7 @@ Private Sub cmd_GoToRecord_Click()
 
     If IsNumeric(recordID) Then
         Set rs = Me.RecordsetClone
-        rs.FindFirst "[ID_FindID] = " & recordID
+        rs.FindFirst "[ID_BagID] = " & recordID
 
         If rs.NoMatch Then
             MsgBox "Record not found.", vbInformation, "Search Result"
